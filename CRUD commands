@@ -1,0 +1,29 @@
+INSERT
+
+curl -H "Content-Type:application/json" -XPUT 127.0.0.1:9200/movies/_doc/111 -d '{
+"genre":["IMAX","Sci-Fi"],
+"title":"Intestellar",
+"year":2014
+}'
+
+BULK INSERT
+ curl -H "Content-Type:application/json" -XPUT 127.0.0.1:9200/_bulk?pretty --data-binary @movies.json
+
+
+GET
+
+curl -H "Content-Type:application/json" -XGET 127.0.0.1:9200/movies/_search?pretty
+
+UPDATE
+
+curl -H "Content-Type:application/json" -XPOST 127.0.0.1:9200/movies/_update/111 -d '{"doc":{
+"title":"Intesellar"}
+}'
+
+QUERY
+curl -H "Content-Type:application/json" -XGET 127.0.0.1:9200/movies/_search?q=Dark
+
+
+DELETE
+curl -H "Content-Type:application/json" -XDELETE 127.0.0.1:9200/movies/_doc/58559
+
