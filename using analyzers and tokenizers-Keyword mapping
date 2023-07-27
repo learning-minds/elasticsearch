@@ -1,0 +1,32 @@
+Partial Match
+curl -H "Content-Type:application/json" -XGET 127.0.0.1:9200/movies/_search?pretty -d ' { "query":{"match":{"title":"Star Trek"}}}'
+
+GENRE FIELD PARTIAL MATCH
+curl -H "Content-Type:application/json" -XGET 127.0.0.1:9200/movies/_search?pretty -d ' { "query":{"match":{"genre":"sci"}}}'
+
+DELETE EXISTING MAPPING
+curl -H "Content-Type:application/json" -XDELETE 127.0.0.1:9200/movies
+
+DEFINE NEW MAPPING
+curl -H "Content-Type:application/json" -XPUT 127.0.0.1:9200/movies -d 
+'{"mappings":{
+          "properties":{
+                    "id":{"type":"integer"},
+                    "year":{"type":"date"},
+                    "genre":{"type":"keyword"},
+                    "title":{"type":"text","analyzer":"english"}
+                  }
+            }
+}'
+
+BULK INSERT
+
+curl -H "Content-Type:application/json" -XPUT 127.0.0.1:9200/_bulk?pretty --data-binary @movies.json
+
+
+
+Search again
+curl -H "Content-Type:application/json" -XGET 127.0.0.1:9200/movies/_search?pretty -d ' { "query":{"match":{"genre":"sci"}}}'
+
+curl -H "Content-Type:application/json" -XGET 127.0.0.1:9200/movies/_search?pretty -d ' { "query":{"match":{"title":"Star Trek"}}}'
+
