@@ -1,12 +1,45 @@
 Creating Series Index
-  curl -H "Content-Type:application/json" -XPUT 127.0.0.1:9200/seriestest/_doc/111 -d '{ "mappings":    
-  {"properties":
-         {"film_to_franchise":{
-                   "type":"join",
-                   "relations":{"franchise":"film"}
-                               }
-         }
-  }
+curl -H "Content-Type:application/json" -XPUT 127.0.0.1:9200/series -d '{ 
+"mappings":{
+        "properties":{
+              "film_to_franchise":{
+                            "type":"join",  
+                            "relations":{"franchise":"film"}
+                                  }
+            }
+    }
 }'
+
+INSERT DATA
+curl -H "Content-Type:application/json" -XPUT 127.0.0.1:9200/_bulk?pretty --data-binary @series.json
+
+GET DATA
+We're getting films having franchise Star Wars
+ curl -H "Content-Type:application/json" -XGET 127.0.0.1:9200/seriestest/_search?pretty -d '
+ {
+      "query":{
+             "has_parent":{   
+                     "parent_type":"franchise",
+                     "query":{
+                           "match": {
+                                 "title":"Star Wars"                              }
+                           } 
+                       }
+               }
+ }'
+
+We're getting franchise here
+curl -H "Content-Type:application/json" -XGET 127.0.0.1:9200/seriestest/_search?pretty -d '
+ {
+      "query":{
+             "has_child":{   
+                     "type":"film",
+                     "query":{
+                           "match": {
+                                 "title":"The Force Awakens"                              }                       
+                           } 
+                       }
+               }
+ }'
 
   
