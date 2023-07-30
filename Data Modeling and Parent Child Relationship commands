@@ -1,0 +1,12 @@
+Creating Series Index
+  curl -H "Content-Type:application/json" -XPUT 127.0.0.1:9200/seriestest/_doc/111 -d '{ "mappings":    
+  {"properties":
+         {"film_to_franchise":{
+                   "type":"join",
+                   "relations":{"franchise":"film"}
+                               }
+         }
+  }
+}'
+
+  
